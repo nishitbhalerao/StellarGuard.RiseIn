@@ -1,4 +1,4 @@
-#![no_std]
+winget install --id RustLang.Rust -e#![no_std]
 use soroban_sdk::{contract, contractimpl, Address, Env};
 
 #[contract]

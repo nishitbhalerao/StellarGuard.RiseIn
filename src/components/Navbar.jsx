@@ -12,7 +12,12 @@ export default function Navbar() {
       await connect();
       showToast('Wallet connected successfully', 'success');
     } catch (error) {
-      showToast('Failed to connect wallet', 'error');
+      const message = error.message?.includes('not installed')
+        ? 'Freighter wallet not found. Please install it from freighter.app'
+        : error.message?.includes('declined')
+          ? 'Connection request was declined'
+          : 'Failed to connect wallet. Please try again.';
+      showToast(message, 'error');
     }
   };
 

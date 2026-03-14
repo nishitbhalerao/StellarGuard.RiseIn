@@ -17,11 +17,14 @@ export function WalletProvider({ children }) {
       const connected = await isWalletConnected();
       if (connected) {
         const key = await getWalletPublicKey();
-        setPublicKey(key);
-        setIsConnected(true);
+        if (key) {
+          setPublicKey(key);
+          setIsConnected(true);
+        }
       }
     } catch (error) {
       console.error('Check connection error:', error);
+      // Silently fail - user will just see disconnected state
     } finally {
       setIsLoading(false);
     }
@@ -30,11 +33,17 @@ export function WalletProvider({ children }) {
   const connect = async () => {
     try {
       const key = await connectWallet();
-      setPublicKey(key);
-      setIsConnected(true);
-      return key;
+      if (key) {
+        setPublicKey(key);
+        setIsConnected(true);
+        return key;
+      }
+      throw new Error('No public key returned');
     } catch (error) {
       console.error('Connect wallet error:', error);
+      // Reset state on failure
+      setPublicKey(null);
+      setIsConnected(false);
       throw error;
     }
   };
@@ -42,10 +51,12 @@ export function WalletProvider({ children }) {
   const disconnect = async () => {
     try {
       await disconnectWallet();
-      setPublicKey(null);
-      setIsConnected(false);
     } catch (error) {
       console.error('Disconnect wallet error:', error);
+    } finally {
+      // Always clear state, even if disconnect fails
+      setPublicKey(null);
+      setIsConnected(false);
     }
   };
 
