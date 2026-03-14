@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import auditRoutes from './routes/audit.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 // Routes
 app.use('/api/audit', auditRoutes);
+app.use('/api/user', userRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, data: { status: 'healthy', timestamp: new Date() } });

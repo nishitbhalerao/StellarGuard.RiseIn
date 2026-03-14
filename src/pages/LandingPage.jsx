@@ -49,11 +49,11 @@ export default function LandingPage() {
             Automated Smart Contract Security Auditor for Stellar Soroban
           </p>
           <button
-            onClick={() => navigate('/upload')}
+            onClick={() => navigate('/login')}
             className="btn-primary text-lg px-8 py-4 animate-fade-in"
             style={{ animationDelay: '0.4s' }}
           >
-            Start Audit
+            Get Started
           </button>
         </div>
       </div>

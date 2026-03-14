@@ -62,10 +62,28 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Get audit by ID
-router.get('/:auditId', async (req, res) => {
+// Admin: Get all audits (must come before generic /:auditId)
+router.get('/admin/all', async (req, res) => {
   try {
-    const audit = await Audit.findOne({ auditId: req.params.auditId });
+    const audits = await Audit.find().sort({ createdAt: -1 });
+    
+    res.json({
+      success: true,
+      data: audits
+    });
+  } catch (error) {
+    console.error('Fetch all audits error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch audits'
+    });
+  }
+});
+
+// Admin: Delete audit by ID (must come before generic /:auditId)
+router.delete('/admin/:auditId', async (req, res) => {
+  try {
+    const audit = await Audit.findOneAndDelete({ auditId: req.params.auditId });
     
     if (!audit) {
       return res.status(404).json({
@@ -76,13 +94,14 @@ router.get('/:auditId', async (req, res) => {
     
     res.json({
       success: true,
+      message: 'Audit deleted successfully',
       data: audit
     });
   } catch (error) {
-    console.error('Fetch audit error:', error);
+    console.error('Delete audit error:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch audit'
+      error: 'Failed to delete audit'
     });
   }
 });
@@ -137,6 +156,31 @@ router.patch('/:auditId/blockchain', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to update blockchain hash'
+    });
+  }
+});
+
+// Get audit by ID (must come last as it's generic)
+router.get('/:auditId', async (req, res) => {
+  try {
+    const audit = await Audit.findOne({ auditId: req.params.auditId });
+    
+    if (!audit) {
+      return res.status(404).json({
+        success: false,
+        error: 'Audit not found'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: audit
+    });
+  } catch (error) {
+    console.error('Fetch audit error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch audit'
     });
   }
 });
