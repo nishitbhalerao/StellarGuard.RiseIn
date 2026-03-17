@@ -5,9 +5,15 @@ const SOROBAN_RPC_URL = import.meta.env.VITE_SOROBAN_RPC_URL || '';
 const NETWORK_PASSPHRASE = import.meta.env.VITE_NETWORK_PASSPHRASE || '';
 const CONTRACT_ID = import.meta.env.VITE_CONTRACT_ID || '';
 
+function isContractConfigured() {
+  return CONTRACT_ID && CONTRACT_ID !== 'your_deployed_contract_id_here';
+}
+
 function ensureEnv(name, value) {
-  if (!value) {
-    throw new Error(`${name} is not set. Please add it to your .env file and restart the dev server.`);
+  if (!value || value === 'your_deployed_contract_id_here') {
+    throw new Error(
+      `${name} is not properly configured. Please:\n1. Deploy the smart contract\n2. Update VITE_CONTRACT_ID in .env\n3. Restart the dev server`
+    );
   }
   return value;
 }
@@ -24,8 +30,35 @@ function getContract() {
 
 export async function storeAuditOnChain(walletAddress, contractName, reportHash) {
   try {
+    // Check if contract is properly configured
+    if (!isContractConfigured()) {
+      return {
+        success: false,
+        message: 'Smart contract not deployed yet. Audit stored locally.',
+        hash: null
+      };
+    }
+
+    if (!walletAddress) {
+      throw new Error('Wallet not connected. Please connect your wallet first.');
+    }
+
+    if (!contractName || !reportHash) {
+      throw new Error('Missing audit data (contract name or report hash)');
+    }
+
     const server = getServer();
-    const account = await server.getAccount(walletAddress);
+    
+    // Verify wallet account exists on testnet
+    let account;
+    try {
+      account = await server.getAccount(walletAddress);
+    } catch (error) {
+      throw new Error(
+        'Wallet account not found on Stellar testnet. ' +
+        'Please fund your account with testnet XLM from: https://stellar.org/developers/testnet-lab'
+      );
+    }
 
     const contract = getContract();
 
@@ -65,11 +98,16 @@ export async function storeAuditOnChain(walletAddress, contractName, reportHash)
       }
 
       if (txResponse.status === 'SUCCESS') {
-        return result.hash;
+        return {
+          success: true,
+          hash: result.hash
+        };
+      } else {
+        throw new Error(`Transaction status: ${txResponse.status}`);
       }
     }
 
-    throw new Error('Transaction failed');
+    throw new Error('Transaction pending but no confirmation received');
   } catch (error) {
     console.error('Store on chain error:', error);
     throw error;
@@ -78,6 +116,10 @@ export async function storeAuditOnChain(walletAddress, contractName, reportHash)
 
 export async function getAuditFromChain(auditId) {
   try {
+    if (!isContractConfigured()) {
+      return null;
+    }
+
     const contract = getContract();
 
     const operation = contract.call(

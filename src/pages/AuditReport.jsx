@@ -43,19 +43,38 @@ export default function AuditReport() {
 
     setIsStoring(true);
     try {
-      const txHash = await storeAuditOnChain(
+      const result = await storeAuditOnChain(
         publicKey,
         audit.contractName,
         audit.reportHash
       );
       
-      await updateBlockchainHash(auditId, txHash);
-      
-      showToast('Audit stored on blockchain', 'success');
-      loadAudit();
+      // Handle case where contract is not deployed yet
+      if (result && !result.success) {
+        showToast(result.message || 'Smart contract not configured yet', 'info');
+        return;
+      }
+
+      // Handle successful blockchain storage
+      if (result && result.hash) {
+        await updateBlockchainHash(auditId, result.hash);
+        showToast('✓ Audit stored on blockchain successfully!', 'success');
+        loadAudit();
+      }
     } catch (error) {
       console.error('Store on chain error:', error);
-      showToast('Failed to store on blockchain', 'error');
+      const errorMessage = error.message || 'Failed to store audit on blockchain';
+      
+      // Provide user-friendly error messages
+      if (errorMessage.includes('Wallet not connected')) {
+        showToast('Please connect your wallet to store on blockchain', 'error');
+      } else if (errorMessage.includes('account not found')) {
+        showToast('Wallet not funded. Please fund with testnet XLM: https://stellar.org/developers/testnet-lab', 'error');
+      } else if (errorMessage.includes('not properly configured')) {
+        showToast('Smart contract not deployed yet. Audits are saved locally.', 'info');
+      } else {
+        showToast(errorMessage, 'error');
+      }
     } finally {
       setIsStoring(false);
     }

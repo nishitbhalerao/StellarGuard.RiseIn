@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Audit from '../models/Audit.model.js';
 import { analyzeContract } from '../services/analyzer.service.js';
 import { calculateScore, generateReportHash } from '../services/score.service.js';
+import { authenticate, requireAdmin, optionalAuth } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
@@ -63,7 +64,7 @@ router.post('/', async (req, res) => {
 });
 
 // Admin: Get all audits (must come before generic /:auditId)
-router.get('/admin/all', async (req, res) => {
+router.get('/admin/all', authenticate, requireAdmin, async (req, res) => {
   try {
     const audits = await Audit.find().sort({ createdAt: -1 });
     
@@ -81,7 +82,7 @@ router.get('/admin/all', async (req, res) => {
 });
 
 // Admin: Delete audit by ID (must come before generic /:auditId)
-router.delete('/admin/:auditId', async (req, res) => {
+router.delete('/admin/:auditId', authenticate, requireAdmin, async (req, res) => {
   try {
     const audit = await Audit.findOneAndDelete({ auditId: req.params.auditId });
     

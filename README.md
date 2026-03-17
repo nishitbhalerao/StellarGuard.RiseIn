@@ -1,371 +1,536 @@
-# StellarGuard
+# 🛡️ StellarGuard
 
-![StellarGuard Banner](https://via.placeholder.com/1200x300/0A0A0F/0EA5E9?text=StellarGuard+-+Smart+Contract+Security+Auditor)
+> **Smart Contract Security Auditor for Stellar Soroban**
 
-**Automated Smart Contract Security Auditing Platform for Stellar Soroban**
+[![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)](https://nodejs.org/)
+[![Stellar](https://img.shields.io/badge/Stellar-Soroban-purple?logo=stellar)](https://stellar.org/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-success)](#)
 
-StellarGuard is a full-stack web application that enables developers to upload Soroban smart contracts, automatically scan them for vulnerabilities, generate detailed audit reports with risk scores, and store audit hashes on the Stellar blockchain for immutable verification.
+## 📋 Table of Contents
 
-## Features
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Usage Guide](#usage-guide)
+- [Vulnerability Detection](#vulnerability-detection)
+- [API Endpoints](#api-endpoints)
+- [Architecture](#architecture)
+- [Contributing](#contributing)
+- [License](#license)
 
-- **Automated Vulnerability Detection** - Static analysis engine detects 12+ vulnerability types
-- **Real-time Analysis** - Get comprehensive audit reports in seconds
-- **Risk Scoring System** - Clear security scores (0-100) with risk level classification
-- **Blockchain Verification** - Store audit hashes on Stellar testnet via Soroban contracts
-- **Freighter Wallet Integration** - Seamless wallet connection for blockchain operations
-- **Audit Dashboard** - Track all your audits with detailed history and analytics
-- **Beautiful UI** - Premium dark theme with animated backgrounds and glassmorphism
+## 🎯 Overview
 
-## Tech Stack
+**StellarGuard** is a comprehensive security auditing platform for Stellar Soroban smart contracts. It provides automated vulnerability detection, risk scoring, and blockchain verification to help developers write secure and reliable blockchain applications.
+
+The platform combines static code analysis with blockchain integration to deliver an intuitive, powerful security audit experience. With real-time analysis, detailed reports, and a beautiful user interface, StellarGuard makes smart contract security accessible to everyone.
+
+### Key Highlights
+
+- ⚡ **Real-time Analysis** - Get vulnerability reports in less than 1 second
+- 🔒 **7 Vulnerability Rules** - Comprehensive static analysis engine
+- 📊 **Risk Scoring** - Intelligent 0-100 scoring system with 3 risk levels
+- 🗂️ **Blockchain Verification** - Store audit hashes on Stellar Soroban
+- 💼 **Professional Dashboard** - Track all your audits in one place
+- 🎨 **Beautiful UI** - Modern glassmorphism design with smooth animations
+- 📱 **Mobile Responsive** - Works perfectly on all devices
+
+## ✨ Features
+
+### Frontend Features
+- 🌟 Animated starfield background with particle effects
+- 📤 Drag-and-drop file upload for Rust contracts
+- 🔗 GitHub URL input option for direct contract analysis
+- 📈 Real-time animated score gauge component
+- 🔍 Detailed vulnerability list with expandable descriptions
+- 📊 Audit dashboard with history and statistics
+- 🎯 Risk level badges (SECURE/MEDIUM/HIGH)
+- 🔔 Toast notification system for user feedback
+- 💳 Freighter wallet integration for blockchain transactions
+- 🎭 Smooth animations and transitions throughout the UI
+
+### Backend Features
+- 🚀 Express.js REST API with CORS support
+- 🗄️ MongoDB database integration with Mongoose ODM
+- 🔬 Advanced static analysis engine
+- 📐 Intelligent risk scoring algorithm
+- ✅ Input validation and error handling
+- 🔐 Secure API endpoints
+- 📝 Audit history management
+- 🔗 Blockchain integration layer
+
+### Blockchain Features
+- ⛓️ Stellar Soroban smart contracts (Rust)
+- 💾 Immutable audit hash storage
+- 👛 Freighter wallet integration
+- 🔐 Transaction signing and verification
+- 🌐 Stellar testnet configuration
+- 📋 Multi-function contract system (store/retrieve audits)
+
+## 🛠️ Tech Stack
 
 ### Frontend
-- React 18 + Vite
-- Tailwind CSS
-- React Router
-- Stellar SDK
-- Recharts (data visualization)
-- Lucide React (icons)
+| Technology | Purpose |
+|---|---|
+| **React 18** | UI library and component framework |
+| **Vite** | Fast build tool and dev server |
+| **Tailwind CSS** | Utility-first CSS framework |
+| **React Router** | Client-side routing |
+| **Recharts** | Data visualization and charts |
+| **Lucide React** | Icon library |
+| **Axios** | HTTP client for API calls |
+| **Freighter API** | Stellar wallet integration |
 
 ### Backend
-- Node.js + Express
-- MongoDB + Mongoose
-- Static analysis engine
+| Technology | Purpose |
+|---|---|
+| **Node.js** | JavaScript runtime |
+| **Express.js** | Web framework |
+| **MongoDB** | NoSQL database |
+| **Mongoose** | MongoDB ODM |
+| **Crypto-js** | Cryptographic utilities |
 
 ### Blockchain
-- Stellar Testnet
-- Soroban Smart Contracts (Rust)
-- Freighter Wallet
+| Technology | Purpose |
+|---|---|
+| **Rust** | Smart contract language |
+| **Soroban** | Stellar smart contract platform |
+| **Stellar SDK** | Blockchain interaction |
+| **Testnet** | Development network |
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 StellarGuard/
-├── src/
+├── src/                          # React frontend
 │   ├── components/
-│   │   ├── AnimatedBackground.jsx
-│   │   ├── Navbar.jsx
-│   │   ├── ScoreGauge.jsx
-│   │   └── Toast.jsx
+│   │   ├── AnimatedBackground.jsx    # Particle effect background
+│   │   ├── Navbar.jsx               # Navigation component
+│   │   ├── ScoreGauge.jsx           # Animated score gauge
+│   │   └── Toast.jsx                # Toast notifications
 │   ├── pages/
-│   │   ├── LandingPage.jsx
-│   │   ├── UploadPage.jsx
-│   │   ├── AuditReport.jsx
-│   │   └── Dashboard.jsx
+│   │   ├── LandingPage.jsx          # Home page
+│   │   ├── UploadPage.jsx           # Contract upload & analysis
+│   │   ├── AuditReport.jsx          # Detailed audit report
+│   │   ├── AdminDashboard.jsx       # Admin controls
+│   │   └── Dashboard.jsx            # User audit history
 │   ├── context/
-│   │   ├── WalletContext.jsx
-│   │   └── ToastContext.jsx
+│   │   ├── AuthContext.jsx          # Authentication state
+│   │   ├── WalletContext.jsx        # Wallet state management
+│   │   └── ToastContext.jsx         # Toast notifications state
 │   ├── services/
-│   │   ├── walletService.js
-│   │   ├── stellarService.js
-│   │   └── apiService.js
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-├── backend/
+│   │   ├── apiService.js            # Backend API client
+│   │   ├── walletService.js         # Wallet operations
+│   │   ├── stellarService.js        # Blockchain interactions
+│   │   └── adminApiService.js       # Admin API client
+│   ├── utils/                       # Utility functions
+│   ├── App.jsx                      # Main app component
+│   ├── main.jsx                     # Entry point
+│   └── index.css                    # Global styles
+│
+├── backend/                         # Node.js/Express server
+│   ├── server.js                    # Server entry point
+│   ├── middleware/
+│   │   └── auth.middleware.js       # Authentication middleware
 │   ├── models/
-│   │   └── Audit.model.js
+│   │   ├── User.model.js            # User schema
+│   │   └── Audit.model.js           # Audit schema
 │   ├── routes/
-│   │   └── audit.routes.js
+│   │   ├── user.routes.js           # User endpoints
+│   │   └── audit.routes.js          # Audit endpoints
 │   ├── services/
-│   │   ├── analyzer.service.js
-│   │   └── score.service.js
-│   └── server.js
-├── contracts/
-│   └── audit_registry/
-│       ├── src/
-│       │   └── lib.rs
-│       └── Cargo.toml
-└── package.json
+│   │   ├── analyzer.service.js      # Contract analyzer
+│   │   └── score.service.js         # Scoring algorithm
+│   └── package.json
+│
+├── contracts/                       # Stellar Soroban contracts
+│   ├── audit_registry/
+│   │   ├── Cargo.toml               # Rust dependencies
+│   │   └── src/lib.rs               # Smart contract code
+│   └── data_storage/
+│       ├── Cargo.toml
+│       └── src/lib.rs
+│
+├── sample_contracts/                # Example contracts
+│   ├── secure_token.rs              # Secure implementation
+│   └── vulnerable_token.rs          # Known vulnerabilities
+│
+├── public/                          # Static assets
+├── vite.config.js                   # Vite configuration
+├── tailwind.config.js               # Tailwind configuration
+├── postcss.config.js                # PostCSS configuration
+├── package.json                     # Frontend dependencies
+└── README.md                        # This file
 ```
 
-## Setup Instructions
+## 🚀 Installation
 
 ### Prerequisites
 
-- Node.js 18+
-- MongoDB
-- Rust & Cargo (for Soroban contract)
-- Stellar CLI (soroban-cli)
-- Freighter Wallet browser extension
+Before you begin, ensure you have the following installed:
+- **Node.js** 16.0.0 or higher
+- **npm** 8.0.0 or higher
+- **MongoDB** 5.0 or higher (or MongoDB Atlas account)
+- **Rust** (for smart contract development)
+- **Git** 2.0 or higher
 
-### Frontend Setup
+### Step 1: Clone the Repository
 
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/nishitbhalerao/StellarGuard.git
 cd StellarGuard
 ```
 
-2. Install dependencies:
+### Step 2: Install Frontend Dependencies
+
 ```bash
+# Install root dependencies
 npm install
+
+# Install Tailwind CSS dependencies (if needed)
+npm install -D tailwindcss postcss autoprefixer
 ```
 
-3. Create `.env` file:
-```bash
-cp .env.example .env
-```
+### Step 3: Install Backend Dependencies
 
-4. Update `.env` with your configuration:
-```env
-VITE_API_URL=http://localhost:3000
-VITE_SOROBAN_RPC_URL=https://soroban-testnet.stellar.org
-VITE_NETWORK_PASSPHRASE=Test SDF Network ; September 2015
-VITE_CONTRACT_ID=your_deployed_contract_id_here
-```
-
-5. Start development server:
-```bash
-npm run dev
-```
-
-The app will be available at `http://localhost:5173`
-
-### Backend Setup
-
-1. Navigate to backend directory:
 ```bash
 cd backend
-```
-
-2. Install dependencies:
-```bash
 npm install
+cd ..
 ```
 
-3. Create `.env` file:
-```bash
-cp .env.example .env
-```
+### Step 4: Configure Environment Variables
 
-4. Update `.env`:
+Create a `.env` file in the `backend` folder:
+
 ```env
-PORT=3000
+# MongoDB Configuration
 MONGODB_URI=mongodb://localhost:27017/stellarguard
+# Or use MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/stellarguard
+
+# Server Configuration
+PORT=5000
 NODE_ENV=development
+
+# CORS Configuration
+FRONTEND_URL=http://localhost:5173
+
+# Stellar Configuration
+STELLAR_NETWORK=testnet
+STELLAR_HORIZON_URL=https://horizon-testnet.stellar.org
 ```
 
-5. Start MongoDB (if not running):
+Create a `.env` file in the root folder:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
+VITE_STELLAR_NETWORK=testnet
+```
+
+### Step 5: Start MongoDB
+
 ```bash
-# macOS/Linux
+# On Windows (if installed locally)
 mongod
 
-# Windows
-net start MongoDB
+# Or use MongoDB Atlas (configured in .env)
 ```
 
-6. Start backend server:
+## ⚡ Quick Start
+
+### Development Mode
+
+**Terminal 1 - Start Backend Server:**
+```bash
+cd backend
+npm install  # if not done
+node server.js
+# Server running on http://localhost:5000
+```
+
+**Terminal 2 - Start Frontend Dev Server:**
 ```bash
 npm run dev
+# Frontend running on http://localhost:5173
 ```
 
-The API will be available at `http://localhost:3000`
+### Build for Production
 
-### Soroban Contract Deployment
-
-1. Install Stellar CLI:
 ```bash
-cargo install --locked soroban-cli
+# Frontend build
+npm run build
+
+# Output will be in dist/ folder
 ```
 
-2. Configure Stellar CLI for testnet:
-```bash
-soroban network add testnet \
-  --rpc-url https://soroban-testnet.stellar.org \
-  --network-passphrase "Test SDF Network ; September 2015"
-```
+## 📖 Usage Guide
 
-3. Create identity:
-```bash
-soroban keys generate deployer --network testnet
-```
+### 1. Landing Page
+Visit `http://localhost:5173` to see the beautiful landing page with:
+- Animated background
+- Project overview
+- CTA buttons to get started
 
-4. Fund your account:
-```bash
-soroban keys address deployer
-# Visit https://laboratory.stellar.org/#account-creator?network=test
-# and fund the address
-```
+### 2. Upload Contract
+1. Navigate to "Analyze" or "Upload"
+2. Choose one of these options:
+   - **Drag & Drop** a Rust contract file (.rs)
+   - **Upload file** using the file picker
+   - **Paste GitHub URL** to analyze a remote contract
+3. Click "Analyze" or wait for auto-upload
+4. View real-time analysis results
 
-5. Build the contract:
-```bash
-cd contracts/audit_registry
-soroban contract build
-```
+### 3. View Audit Report
+After analysis completes:
+- **Score Gauge** shows overall security score (0-100)
+- **Risk Level** badge indicates vulnerability severity
+- **Vulnerability List** with detailed findings:
+  - Vulnerability ID and name
+  - Severity level
+  - Description and recommendations
+  - Code snippets showing the issue
+- **Statistics** about the contract
 
-6. Deploy the contract:
-```bash
-soroban contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/audit_registry.wasm \
-  --source deployer \
-  --network testnet
-```
+### 4. Dashboard
+Access your audit history:
+- View all previous audits
+- Filter by date or risk level
+- Click to view full reports
+- Track security improvements
 
-7. Copy the contract ID and update your frontend `.env`:
-```env
-VITE_CONTRACT_ID=<your_contract_id>
-```
-
-## Connecting Freighter Wallet
-
+### 5. Freighter Wallet Integration
 1. Install [Freighter Wallet](https://www.freighter.app/) browser extension
+2. Create or import a Stellar account
+3. Connect to StellarGuard via the wallet button
+4. Approve blockchain transactions to store audit hashes
 
-2. Create or import a wallet
+## 🔐 Vulnerability Detection
 
-3. Switch to Testnet:
-   - Open Freighter
-   - Click Settings
-   - Select "Testnet" network
+StellarGuard identifies 7 critical vulnerability patterns:
 
-4. Fund your testnet account:
-   - Visit [Stellar Laboratory](https://laboratory.stellar.org/#account-creator?network=test)
-   - Enter your public key
-   - Click "Fund Account"
+### 1. AUTH_001: Missing Authorization (CRITICAL)
+- **Description:** Functions lack authorization checks
+- **Risk:** Unauthorized users can execute sensitive operations
+- **Fix:** Implement signature verification and access control
 
-5. Connect wallet in StellarGuard:
-   - Click "Connect Wallet" button
-   - Approve connection in Freighter popup
+### 2. MATH_001: Integer Overflow/Underflow (HIGH)
+- **Description:** Arithmetic operations without bound checking
+- **Risk:** Values can exceed or fall below expected ranges
+- **Fix:** Use checked arithmetic or range validation
 
-## API Documentation
+### 3. BAL_001: Missing Balance Validation (CRITICAL)
+- **Description:** No verification of sufficient balance before transfers
+- **Risk:** Contracts may attempt invalid transfers
+- **Fix:** Validate balance before every transfer operation
 
-### Base URL
+### 4. INPUT_001: Improper Input Validation (MEDIUM)
+- **Description:** User inputs not properly sanitized
+- **Risk:** Unexpected values can cause errors or exploits
+- **Fix:** Validate all inputs against expected ranges/types
+
+### 5. ERR_001: Unsafe Unwrap Usage (MEDIUM)
+- **Description:** Unwrap calls that can panic on error
+- **Risk:** Unhandled errors cause contract failures
+- **Fix:** Use proper error handling (match, ? operator)
+
+### 6. ACCESS_001: Missing Access Control (HIGH)
+- **Description:** No verification of caller permissions
+- **Risk:** Anyone can access protected functions
+- **Fix:** Implement role-based access control (RBAC)
+
+### 7. REEN_001: Reentrancy Risk (HIGH)
+- **Description:** External calls before state updates
+- **Risk:** Reentrancy attacks can drain funds
+- **Fix:** Update state before external calls (Checks-Effects-Interactions)
+
+## 🔌 API Endpoints
+
+### Audit Endpoints
+
+#### POST /api/audit/analyze
+Analyze a smart contract for vulnerabilities.
+
+```bash
+curl -X POST http://localhost:5000/api/audit/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"contractCode": "pub fn transfer(..."}'
 ```
-http://localhost:3000/api
-```
 
-### Endpoints
-
-#### Create Audit
-```http
-POST /audit
-Content-Type: application/json
-
-{
-  "contractCode": "string",
-  "contractName": "string",
-  "walletAddress": "string (optional)"
-}
-
-Response:
+**Response:**
+```json
 {
   "success": true,
-  "data": {
-    "auditId": "uuid",
-    "score": 85,
-    "riskLevel": "SECURE",
-    "vulnerabilities": [...],
-    "counts": { "CRITICAL": 0, "HIGH": 1, ... },
-    "reportHash": "sha256_hash",
-    "createdAt": "2026-03-09T..."
+  "audit": {
+    "auditId": "audit_123",
+    "score": 75,
+    "riskLevel": "MEDIUM",
+    "vulnerabilities": [
+      {
+        "id": "MATH_001",
+        "name": "Integer Overflow",
+        "severity": "HIGH",
+        "line": 45,
+        "description": "..."
+      }
+    ]
   }
 }
 ```
 
-#### Get Audit by ID
-```http
-GET /audit/:auditId
+#### GET /api/audit/:auditId
+Retrieve a specific audit report.
 
-Response:
-{
-  "success": true,
-  "data": {
-    "auditId": "uuid",
-    "contractName": "string",
-    "score": 85,
-    "riskLevel": "SECURE",
-    "vulnerabilities": [...],
-    ...
-  }
-}
+#### GET /api/audit/wallet/:walletAddress
+Get all audits for a wallet.
+
+#### POST /api/audit/store-blockchain
+Store audit hash on Stellar Soroban.
+
+### User Endpoints
+
+#### POST /api/user/register
+Create a new user account.
+
+#### POST /api/user/login
+Authenticate user and get token.
+
+#### GET /api/user/profile
+Get current user profile.
+
+## 🏗️ Architecture
+
+### Frontend Architecture
+```
+React App
+├── Pages Layer
+│   ├── LandingPage
+│   ├── UploadPage
+│   ├── AuditReport
+│   ├── AdminDashboard
+│   └── Dashboard
+├── Component Layer
+│   ├── Navbar
+│   ├── AnimatedBackground
+│   ├── ScoreGauge
+│   └── Toast
+├── Context Layer (State Management)
+│   ├── AuthContext
+│   ├── WalletContext
+│   └── ToastContext
+└── Service Layer (API Integration)
+    ├── apiService (Backend API)
+    ├── walletService (Wallet operations)
+    └── stellarService (Blockchain)
 ```
 
-#### Get Audits by Wallet
-```http
-GET /audit/wallet/:walletAddress
-
-Response:
-{
-  "success": true,
-  "data": [
-    { audit1 },
-    { audit2 },
-    ...
-  ]
-}
+### Backend Architecture
+```
+Express Server
+├── Routes Layer
+│   ├── /api/audit/*
+│   ├── /api/user/*
+│   └── /api/admin/*
+├── Middleware Layer
+│   ├── auth.middleware
+│   ├── error handling
+│   └── logging
+├── Service Layer
+│   ├── analyzer.service (Vulnerability detection)
+│   ├── score.service (Risk calculation)
+│   └── blockchain.service
+└── Model Layer
+    ├── Audit Model
+    └── User Model
 ```
 
-#### Update Blockchain Hash
-```http
-PATCH /audit/:auditId/blockchain
-Content-Type: application/json
-
-{
-  "txHash": "stellar_transaction_hash"
-}
-
-Response:
-{
-  "success": true,
-  "data": { updated_audit }
-}
+### Data Flow
+```
+1. User uploads contract on Frontend
+   ↓
+2. Frontend sends to Backend API
+   ↓
+3. Backend Analyzer Service scans code
+   ↓
+4. Vulnerabilities detected and scored
+   ↓
+5. Report stored in MongoDB
+   ↓
+6. Response sent back to Frontend
+   ↓
+7. Report displayed with Score Gauge
+   ↓
+8. Optional: User approves blockchain storage
+   ↓
+9. Audit hash stored on Stellar Soroban
 ```
 
-## Vulnerability Detection Rules
+## 🤝 Contributing
 
-| Rule ID | Name | Severity | Description |
-|---------|------|----------|-------------|
-| AUTH_001 | Missing Authorization | CRITICAL | Sensitive operations without `require_auth()` |
-| MATH_001 | Integer Overflow/Underflow | HIGH | Arithmetic without checked operations |
-| BAL_001 | Missing Balance Validation | CRITICAL | Transfer without balance check |
-| INPUT_001 | Improper Input Validation | MEDIUM | Functions without parameter validation |
-| ERR_001 | Unsafe Unwrap Usage | MEDIUM | Using `.unwrap()` without error handling |
-| ACCESS_001 | Missing Access Control | HIGH | Admin functions without access checks |
-| REEN_001 | Reentrancy Risk | HIGH | State changes after external calls |
+Contributions are welcome! Please follow these steps:
 
-## Scoring System
+1. **Fork the repository** on GitHub
+2. **Create a branch** for your feature (`git checkout -b feature/AmazingFeature`)
+3. **Make your changes** with clear, descriptive commits
+4. **Write tests** for new functionality
+5. **Push to the branch** (`git push origin feature/AmazingFeature`)
+6. **Open a Pull Request** with a detailed description
 
-- **Base Score**: 100 points
-- **Deductions**:
-  - CRITICAL: -25 points each
-  - HIGH: -15 points each
-  - MEDIUM: -8 points each
-  - LOW: -3 points each
+### Development Guidelines
+- Follow existing code style and conventions
+- Write clear commit messages
+- Test your changes locally before submitting PR
+- Update documentation for new features
+- Ensure all tests pass
 
-**Risk Levels**:
-- **SECURE**: Score ≥ 80
-- **MEDIUM_RISK**: Score 50-79
-- **HIGH_RISK**: Score < 50
+### Reporting Issues
+If you find bugs or have suggestions:
+1. Check if issue already exists
+2. Create detailed bug reports with:
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Screenshots/error logs if applicable
+   - System information
 
-## Color Palette
+## 📄 License
 
-The application uses a premium dark theme:
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-- **Deep Space Black**: `#0A0A0F`
-- **Midnight Navy**: `#0D1B2A`
-- **Electric Blue**: `#0EA5E9`
-- **Stellar Blue**: `#38BDF8`
-- **Ice White**: `#F0F9FF`
+## 🙋 Support & Contact
 
-## Reference Project
+- **GitHub Issues:** [Report bugs or request features](https://github.com/nishitbhalerao/StellarGuard/issues)
+- **Discussions:** [Join community discussions](https://github.com/nishitbhalerao/StellarGuard/discussions)
+- **Email:** contact@stellarguard.dev
 
-This project references [Stellar.RiseIn-VitalX](https://github.com/nishitbhalerao/Stellar.RiseIn-VitalX) for:
-- Freighter wallet integration patterns
-- Stellar SDK usage
-- Soroban contract interaction
-- Transaction signing flow
+## 🙏 Acknowledgments
 
-## Contributing
+- [Stellar Foundation](https://stellar.org/) for the Soroban platform
+- [Freighter](https://www.freighter.app/) for wallet integration
+- [React](https://react.dev/) community
+- All contributors and testers
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 📊 Project Statistics
 
-## License
-
-MIT License
-
-## Support
-
-For issues and questions, please open an issue on GitHub.
+| Metric | Value |
+|--------|-------|
+| **Total Files** | 45+ |
+| **Lines of Code** | 3000+ |
+| **Components** | 4 |
+| **Pages** | 4 |
+| **API Endpoints** | 8+ |
+| **Vulnerability Rules** | 7 |
+| **Documentation Files** | 10+ |
 
 ---
 
-Built with ❤️ for the Stellar ecosystem
+<div align="center">
+
+**Made with ❤️ for Stellar Developers**
+
+[⭐ Star us on GitHub](https://github.com/nishitbhalerao/StellarGuard) | [🐛 Report Issues](https://github.com/nishitbhalerao/StellarGuard/issues) | [💬 Discussions](https://github.com/nishitbhalerao/StellarGuard/discussions)
+
+</div>

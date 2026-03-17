@@ -1,11 +1,18 @@
 import express from 'express';
 import User from '../models/User.model.js';
 import Audit from '../models/Audit.model.js';
+import { authenticate, requireAdmin } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-// Get all users
-router.get('/admin/all', async (req, res) => {
+// Admin credentials - Only this combination grants admin access
+const ADMIN_CREDENTIALS = {
+  email: 'bhaleraonishit@gmail.com',
+  password: 'nishit@stellarguard2026'
+};
+
+// Get all users (protected - admin only)
+router.get('/admin/all', authenticate, requireAdmin, async (req, res) => {
   try {
     const users = await User.find().sort({ createdAt: -1 });
     
@@ -36,7 +43,7 @@ router.get('/admin/all', async (req, res) => {
 // Create/update user record (called on login/signup)
 router.post('/register', async (req, res) => {
   try {
-    const { email, name } = req.body;
+    const { email, password, name } = req.body;
 
     if (!email) {
       return res.status(400).json({
@@ -45,16 +52,23 @@ router.post('/register', async (req, res) => {
       });
     }
 
+    // Check if this is the admin account with correct credentials
+    const isAdmin = email.toLowerCase() === ADMIN_CREDENTIALS.email.toLowerCase() && 
+                    password === ADMIN_CREDENTIALS.password;
+
     let user = await User.findOne({ email });
 
     if (!user) {
       user = new User({
         email,
         name: name || email.split('@')[0],
+        isAdmin,
         lastActive: new Date()
       });
     } else {
       user.lastActive = new Date();
+      // Update admin status only if correct credentials provided
+      user.isAdmin = isAdmin;
     }
 
     await user.save();
@@ -72,8 +86,8 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Delete user and all their audits
-router.delete('/admin/:userEmail', async (req, res) => {
+// Delete user and all their audits (protected - admin only)
+router.delete('/admin/:userEmail', authenticate, requireAdmin, async (req, res) => {
   try {
     const { userEmail } = req.params;
 

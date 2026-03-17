@@ -3,6 +3,7 @@ import { Trash2, Eye, BarChart3, AlertTriangle, TrendingUp, Loader2, Users } fro
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useNavigate } from 'react-router-dom';
+import { useAdminApi } from '../services/adminApiService';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('audits'); // 'audits' or 'users'
@@ -21,9 +22,10 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [isDeletingId, setIsDeletingId] = useState(null);
 
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const adminApi = useAdminApi();
 
   // Redirect if not admin
   useEffect(() => {
@@ -45,8 +47,7 @@ export default function AdminDashboard() {
   const fetchAudits = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/audit/admin/all');
-      const data = await response.json();
+      const data = await adminApi.fetchAllAudits();
       
       if (data.success) {
         setAudits(data.data || []);
@@ -56,7 +57,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error fetching audits:', error);
-      showToast('Error loading audits', 'error');
+      showToast(error.message || 'Error loading audits', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -65,8 +66,7 @@ export default function AdminDashboard() {
   const fetchUsers = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/user/admin/all');
-      const data = await response.json();
+      const data = await adminApi.fetchAllUsers();
       
       if (data.success) {
         setUsers(data.data || []);
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error fetching users:', error);
-      showToast('Error loading users', 'error');
+      showToast(error.message || 'Error loading users', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -119,10 +119,7 @@ export default function AdminDashboard() {
 
     setIsDeletingId(auditId);
     try {
-      const response = await fetch(`http://localhost:3000/api/audit/admin/${auditId}`, {
-        method: 'DELETE'
-      });
-      const data = await response.json();
+      const data = await adminApi.deleteAudit(auditId);
 
       if (data.success) {
         setAudits(audits.filter(a => a.auditId !== auditId));
@@ -133,7 +130,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error deleting audit:', error);
-      showToast('Error deleting audit', 'error');
+      showToast(error.message || 'Error deleting audit', 'error');
     } finally {
       setIsDeletingId(null);
     }
@@ -146,10 +143,7 @@ export default function AdminDashboard() {
 
     setIsDeletingId(userEmail);
     try {
-      const response = await fetch(`http://localhost:3000/api/user/admin/${encodeURIComponent(userEmail)}`, {
-        method: 'DELETE'
-      });
-      const data = await response.json();
+      const data = await adminApi.deleteUser(userEmail);
 
       if (data.success) {
         setUsers(users.filter(u => u.email !== userEmail));
@@ -161,7 +155,7 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error deleting user:', error);
-      showToast('Error deleting user', 'error');
+      showToast(error.message || 'Error deleting user', 'error');
     } finally {
       setIsDeletingId(null);
     }

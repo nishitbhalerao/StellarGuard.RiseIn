@@ -11,44 +11,87 @@ export function AuthProvider({ children }) {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        // Verify user still exists in backend and get updated admin status
+        verifyAndSyncUser(parsedUser);
       } catch (error) {
         console.error('Error parsing stored user:', error);
         localStorage.removeItem('user');
+        setIsLoading(false);
       }
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, []);
+
+  const verifyAndSyncUser = async (userData) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/user/${userData.email}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data.user) {
+          // Update user with latest backend data
+          const updatedUser = {
+            ...userData,
+            isAdmin: data.data.user.isAdmin
+          };
+          setUser(updatedUser);
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+      }
+    } catch (error) {
+      console.error('Error verifying user:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const login = (email, password) => {
     return new Promise((resolve, reject) => {
       try {
-        // Check if login credentials match admin credentials
-        const isAdmin = email === 'bhaleraonishit@gmail.com' && password === 'nishit@stellarguard2026';
+        // Basic validation - just check email format
+        if (!email || !password) {
+          reject(new Error('Email and password are required'));
+          return;
+        }
 
-        // Simulate API call - in production, this would call your backend
+        // Simulate API call - in production, validate against backend
         setTimeout(async () => {
-          const userData = {
-            id: Math.random().toString(36).substr(2, 9),
-            email,
-            name: email.split('@')[0],
-            isAdmin: isAdmin
-          };
-          
-          // Register user in backend
           try {
-            await fetch('http://localhost:3000/api/user/register', {
+            const userData = {
+              id: Math.random().toString(36).substr(2, 9),
+              email,
+              name: email.split('@')[0],
+              isAdmin: false // Will be updated from backend
+            };
+            
+            // Register user in backend - IMPORTANT: Send password so backend can verify admin credentials
+            const registerResponse = await fetch('http://localhost:3000/api/user/register', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, name: userData.name })
+              body: JSON.stringify({ 
+                email, 
+                password, // Send password for admin verification
+                name: userData.name 
+              })
             });
+
+            if (registerResponse.ok) {
+              const registerData = await registerResponse.json();
+              if (registerData.success && registerData.data) {
+                // Get isAdmin status from backend
+                userData.isAdmin = registerData.data.isAdmin || false;
+              }
+            }
+            
+            localStorage.setItem('user', JSON.stringify(userData));
+            setUser(userData);
+            resolve(userData);
           } catch (error) {
             console.error('Error registering user:', error);
+            reject(new Error('Login failed. Please try again.'));
           }
-          
-          localStorage.setItem('user', JSON.stringify(userData));
-          setUser(userData);
-          resolve(userData);
         }, 500);
       } catch (error) {
         reject(error);
@@ -66,27 +109,40 @@ export function AuthProvider({ children }) {
 
         // Simulate API call - in production, this would call your backend
         setTimeout(async () => {
-          const userData = {
-            id: Math.random().toString(36).substr(2, 9),
-            email,
-            name: email.split('@')[0],
-            isAdmin: false
-          };
-          
-          // Register user in backend
           try {
-            await fetch('http://localhost:3000/api/user/register', {
+            const userData = {
+              id: Math.random().toString(36).substr(2, 9),
+              email,
+              name: email.split('@')[0],
+              isAdmin: false // Will be updated from backend
+            };
+            
+            // Register user in backend - Send password for admin verification
+            const registerResponse = await fetch('http://localhost:3000/api/user/register', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, name: userData.name })
+              body: JSON.stringify({ 
+                email, 
+                password, // Send password for admin verification
+                name: userData.name 
+              })
             });
+
+            if (registerResponse.ok) {
+              const registerData = await registerResponse.json();
+              if (registerData.success && registerData.data) {
+                // Get isAdmin status from backend
+                userData.isAdmin = registerData.data.isAdmin || false;
+              }
+            }
+            
+            localStorage.setItem('user', JSON.stringify(userData));
+            setUser(userData);
+            resolve(userData);
           } catch (error) {
             console.error('Error registering user:', error);
+            reject(new Error('Signup failed. Please try again.'));
           }
-          
-          localStorage.setItem('user', JSON.stringify(userData));
-          setUser(userData);
-          resolve(userData);
         }, 500);
       } catch (error) {
         reject(error);

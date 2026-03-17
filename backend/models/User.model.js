@@ -8,6 +8,11 @@ const userSchema = new mongoose.Schema({
     index: true
   },
   name: String,
+  isAdmin: {
+    type: Boolean,
+    default: false,
+    index: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
