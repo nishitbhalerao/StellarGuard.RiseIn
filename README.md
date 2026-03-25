@@ -571,7 +571,21 @@ vbahirat24@gmail.com
 
 bhaleraonishit@gmail.com 
 
+These few feedback from active 11 users, few gave feedback for my product 😁
 
+Google Form Link :-https://docs.google.com/forms/d/e/1FAIpQLSdubtL9ZcOTWWDm9z-sWKjFX9mr6xaq7TZp1UQXvxVH3POQww/viewform?usp=dialog  
+
+Google Sheet Link :- https://docs.google.com/spreadsheets/d/1iHoueeSdullMq8RW_e-19IKTE9lNBF7SwPRbSYfPimY/edit?usp=sharing 
+
+Sreen Shots From Few users :-
+
+<img width="1919" height="959" alt="Screenshot 2026-03-25 165806" src="https://github.com/user-attachments/assets/e1097c87-3f78-4b1d-92ae-dab4489eff40" />
+
+<img width="1916" height="909" alt="Screenshot 2026-03-25 165855" src="https://github.com/user-attachments/assets/571e3134-95c4-4097-ad59-95d9e12ce06a" />
+
+<img width="1919" height="912" alt="Screenshot 2026-03-25 170009" src="https://github.com/user-attachments/assets/8360cd09-7b96-4553-83fb-127924ad59c8" />
+
+<img width="1919" height="910" alt="Screenshot 2026-03-25 170108" src="https://github.com/user-attachments/assets/77bab3cf-3f59-479b-82d0-f2a6a9128bf4" />
 
 
 
