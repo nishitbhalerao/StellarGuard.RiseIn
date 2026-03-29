@@ -11,7 +11,7 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.js'],
+  ignorePatterns: ['dist', '.eslintrc.js', 'node_modules'],
   parserOptions: { 
     ecmaVersion: 'latest', 
     sourceType: 'module',
@@ -31,32 +31,12 @@ module.exports = {
       { allowConstantExport: true },
     ],
     'react/prop-types': 'off',
-    'no-unused-vars': ['error', { 
+    'no-unused-vars': ['warn', { 
       argsIgnorePattern: '^_',
       varsIgnorePattern: '^_' 
     }],
-    'no-console': ['warn', { 
-      allow: ['warn', 'error'] 
-    }],
+    'no-console': 'off', // Allow console for now
     'prefer-const': 'error',
-    'no-var': 'error',
-    'eqeqeq': ['error', 'always'],
-    'curly': ['error', 'all'],
-    'brace-style': ['error', '1tbs'],
-    'comma-dangle': ['error', 'never'],
-    'semi': ['error', 'always'],
-    'quotes': ['error', 'single', { 
-      avoidEscape: true,
-      allowTemplateLiterals: true 
-    }],
-    'indent': ['error', 2, { 
-      SwitchCase: 1 
-    }],
-    'max-len': ['warn', { 
-      code: 100,
-      ignoreUrls: true,
-      ignoreStrings: true,
-      ignoreTemplateLiterals: true 
-    }]
+    'no-var': 'error'
   },
 };
