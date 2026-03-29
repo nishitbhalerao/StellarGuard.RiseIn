@@ -5,7 +5,14 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "lint": "eslint . --ext .js --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\"",
+    "test": "echo \"No tests specified\" && exit 0",
+    "test:integration": "echo \"No integration tests configured\" && exit 0",
+    "test:coverage": "echo \"No test coverage configured\" && exit 0"
   },
   "dependencies": {
     "express": "^4.18.0",
@@ -14,5 +21,9 @@
     "dotenv": "^16.0.0",
     "multer": "^1.4.5-lts.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0"
   }
 }
