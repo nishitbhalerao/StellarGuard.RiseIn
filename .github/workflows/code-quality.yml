@@ -46,7 +46,7 @@ jobs:
       continue-on-error: true
       
     - name: Upload lint results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: lint-results
         path: |
@@ -119,7 +119,7 @@ jobs:
       continue-on-error: true
       
     - name: Upload audit results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: dependency-audit
         path: |
@@ -158,7 +158,7 @@ jobs:
         find dist/ -name "*.js" -exec ls -lh {} \; | head -10
       
     - name: Upload bundle analysis
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: bundle-analysis
         path: |
