@@ -82,35 +82,39 @@ export default function AuditReport() {
 
   const getSeverityColor = (severity) => {
     const colors = {
-      CRITICAL: 'bg-gradient-danger',
-      HIGH: 'bg-gradient-warning',
-      MEDIUM: 'bg-yellow-500/20 text-yellow-400',
-      LOW: 'bg-blue-500/20 text-blue-400'
+      CRITICAL: 'bg-error-red text-white',
+      HIGH: 'bg-warning-orange text-white',
+      MEDIUM: 'bg-yellow-500 text-white',
+      LOW: 'bg-secondary-blue text-white'
     };
     return colors[severity] || '';
   };
 
   const getRiskBadge = (riskLevel) => {
     const badges = {
-      SECURE: { text: 'SECURE', class: 'bg-gradient-success' },
-      MEDIUM_RISK: { text: 'MEDIUM RISK', class: 'bg-gradient-warning' },
-      HIGH_RISK: { text: 'HIGH RISK', class: 'bg-gradient-danger' }
+      SECURE: { text: 'SECURE', class: 'bg-gradient-to-r from-green-500 to-green-600 text-white' },
+      MEDIUM_RISK: { text: 'MEDIUM RISK', class: 'bg-orange-500 text-white' },
+      HIGH_RISK: { text: 'HIGH RISK', class: 'bg-red-500 text-white' }
     };
     return badges[riskLevel] || badges.SECURE;
   };
 
   if (isLoading) {
     return (
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-20 text-center">
-        <div className="text-xl">Loading audit report...</div>
+      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
+        <div className="card p-12">
+          <div className="text-xl text-dark-gray">Loading audit report...</div>
+        </div>
       </div>
     );
   }
 
   if (!audit) {
     return (
-      <div className="relative z-10 max-w-6xl mx-auto px-4 py-20 text-center">
-        <div className="text-xl">Audit not found</div>
+      <div className="max-w-6xl mx-auto px-4 py-20 text-center">
+        <div className="card p-12">
+          <div className="text-xl text-dark-gray">Audit not found</div>
+        </div>
       </div>
     );
   }
@@ -125,42 +129,42 @@ export default function AuditReport() {
   const riskBadge = getRiskBadge(audit.riskLevel);
 
   return (
-    <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-2 glow-text">{audit.contractName}</h1>
-        <p className="text-ice-white/60">
-          Audited on {new Date(audit.createdAt).toLocaleDateString()}
+        <h1 className="text-4xl font-bold mb-4 text-gradient">{audit.contractName}</h1>
+        <p className="text-gray-600 text-lg">
+          Security Audit Report • {new Date(audit.createdAt).toLocaleDateString()}
         </p>
       </div>
 
       {/* Score Section */}
-      <div className="glass-card p-8 rounded-2xl mb-8">
+      <div className="card p-8 mb-8 hover-lift">
         <ScoreGauge score={audit.score} riskLevel={audit.riskLevel} />
         
-        <div className="text-center mt-6">
-          <span className={`${riskBadge.class} px-6 py-2 rounded-full text-sm font-semibold inline-block`}>
+        <div className="text-center mt-8">
+          <span className={`${riskBadge.class} px-8 py-3 rounded-full text-sm font-semibold inline-block shadow-medium`}>
             {riskBadge.text}
           </span>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-red-400">{counts.CRITICAL}</div>
-            <div className="text-sm text-ice-white/60">Critical</div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-10">
+          <div className="text-center p-4 bg-light-gray rounded-lg">
+            <div className="text-3xl font-bold text-error-red mb-1">{counts.CRITICAL}</div>
+            <div className="text-sm text-gray-600 font-medium">Critical</div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-orange-400">{counts.HIGH}</div>
-            <div className="text-sm text-ice-white/60">High</div>
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-3xl font-bold text-orange-500 mb-1">{counts.HIGH}</div>
+            <div className="text-sm text-gray-600 font-medium">High</div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-400">{counts.MEDIUM}</div>
-            <div className="text-sm text-ice-white/60">Medium</div>
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-3xl font-bold text-yellow-500 mb-1">{counts.MEDIUM}</div>
+            <div className="text-sm text-gray-600 font-medium">Medium</div>
           </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-blue-400">{counts.LOW}</div>
-            <div className="text-sm text-ice-white/60">Low</div>
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-3xl font-bold text-blue-500 mb-1">{counts.LOW}</div>
+            <div className="text-sm text-gray-600 font-medium">Low</div>
           </div>
         </div>
       </div>
@@ -170,13 +174,13 @@ export default function AuditReport() {
         <button
           onClick={handleStoreOnChain}
           disabled={audit.storedOnChain || isStoring}
-          className="btn-primary flex items-center space-x-2 disabled:opacity-50"
+          className="btn-primary flex items-center space-x-2 disabled:opacity-50 hover-lift"
         >
           <LinkIcon className="w-4 h-4" />
           <span>{audit.storedOnChain ? 'Stored on Chain' : 'Store on Blockchain'}</span>
         </button>
         
-        <button className="px-6 py-3 bg-gradient-card border border-electric-blue/30 rounded-lg hover:border-stellar-blue/60 transition flex items-center space-x-2">
+        <button className="btn-secondary flex items-center space-x-2 hover-lift">
           <Download className="w-4 h-4" />
           <span>Download PDF</span>
         </button>
@@ -184,48 +188,57 @@ export default function AuditReport() {
 
       {/* Blockchain Status */}
       {audit.storedOnChain && (
-        <div className="glass-card p-4 rounded-lg mb-8 flex items-center space-x-3">
-          <CheckCircle className="w-5 h-5 text-green-400" />
+        <div className="card p-6 mb-8 flex items-center space-x-4 bg-green-50 border-green-200">
+          <div className="p-2 bg-gradient-to-r from-green-500 to-green-600 rounded-lg">
+            <CheckCircle className="w-6 h-6 text-white" />
+          </div>
           <div className="flex-1">
-            <div className="text-sm font-medium">Verified on Stellar Blockchain</div>
-            <div className="text-xs text-ice-white/60 truncate">TX: {audit.blockchainTxHash}</div>
+            <div className="font-semibold text-gray-800">Verified on Stellar Blockchain</div>
+            <div className="text-sm text-gray-600 truncate">Transaction: {audit.blockchainTxHash}</div>
           </div>
         </div>
       )}
 
       {/* Vulnerabilities */}
-      <div className="glass-card p-8 rounded-2xl">
-        <h2 className="text-2xl font-bold mb-6">Vulnerabilities Found</h2>
+      <div className="card p-8 hover-lift">
+        <h2 className="text-2xl font-bold text-gray-800 mb-8">Security Analysis Results</h2>
         
         {audit.vulnerabilities.length === 0 ? (
-          <div className="text-center py-12">
-            <CheckCircle className="w-16 h-16 text-green-400 mx-auto mb-4" />
-            <p className="text-xl">No vulnerabilities detected!</p>
+          <div className="text-center py-16">
+            <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-10 h-10 text-white" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">No Vulnerabilities Detected!</h3>
+            <p className="text-gray-600">Your smart contract passed all security checks</p>
           </div>
         ) : (
           <div className="space-y-4">
             {audit.vulnerabilities.map((vuln, index) => (
               <div
                 key={index}
-                className="border border-electric-blue/20 rounded-lg p-4 hover:border-stellar-blue/40 transition cursor-pointer"
+                className="border-2 border-gray-200 rounded-xl p-6 hover:border-blue-600 hover:shadow-lg transition-all cursor-pointer hover-lift"
                 onClick={() => setExpandedVuln(expandedVuln === index ? null : index)}
               >
                 <div className="flex items-start space-x-4">
-                  <AlertTriangle className="w-5 h-5 text-orange-400 mt-1" />
+                  <div className="p-2 bg-orange-100 rounded-lg">
+                    <AlertTriangle className="w-6 h-6 text-orange-600" />
+                  </div>
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <span className={`${getSeverityColor(vuln.severity)} px-3 py-1 rounded text-xs font-semibold`}>
+                    <div className="flex items-center space-x-4 mb-3">
+                      <span className={`${getSeverityColor(vuln.severity)} px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide`}>
                         {vuln.severity}
                       </span>
-                      <span className="text-ice-white/60 text-sm">Line {vuln.line}</span>
+                      <span className="text-gray-600 text-sm font-medium">Line {vuln.line}</span>
                     </div>
-                    <h3 className="font-semibold mb-1">{vuln.name}</h3>
-                    <p className="text-ice-white/70 text-sm">{vuln.description}</p>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{vuln.name}</h3>
+                    <p className="text-gray-600 leading-relaxed">{vuln.description}</p>
                     
                     {expandedVuln === index && (
-                      <div className="mt-4 pt-4 border-t border-electric-blue/20">
-                        <div className="text-sm font-medium mb-2">Recommendation:</div>
-                        <p className="text-ice-white/70 text-sm">{vuln.recommendation}</p>
+                      <div className="mt-6 pt-6 border-t border-gray-200">
+                        <div className="bg-gray-50 p-4 rounded-lg">
+                          <div className="text-sm font-semibold text-gray-800 mb-2">💡 Recommendation:</div>
+                          <p className="text-gray-600 text-sm leading-relaxed">{vuln.recommendation}</p>
+                        </div>
                       </div>
                     )}
                   </div>
