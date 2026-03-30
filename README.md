@@ -595,6 +595,17 @@ Deployment Link :-https://stellar-guard-rise-in.vercel.app/
 Deployment Screen shot :- 
 <img width="1919" height="1079" alt="Screenshot 2026-03-27 222448" src="https://github.com/user-attachments/assets/78c2dce6-44b9-49e0-8cc6-f4344b1c57e3" /> 
 
+I Have Changed UI interface and added updated UI SS :- 
+
+<img width="1919" height="1079" alt="Screenshot 2026-03-30 221047" src="https://github.com/user-attachments/assets/9d0c8f02-662d-46a3-83fa-a25b8ff38084" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-30 221056" src="https://github.com/user-attachments/assets/7a49b913-bafd-41c3-92f8-78e80a8f9461" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-30 221113" src="https://github.com/user-attachments/assets/a357d811-fe51-4ebc-8b9e-42b8586876e8" />
+<img width="1919" height="1079" alt="Screenshot 2026-03-30 221133" src="https://github.com/user-attachments/assets/9149fba0-136f-44c5-bb1d-b5a64bbb7d57" />
+<img width="1919" height="1013" alt="Screenshot 2026-03-30 221151" src="https://github.com/user-attachments/assets/69ef236d-852e-4f3c-8031-4fe190de39dc" />
+
+
+
+
 
 
 
